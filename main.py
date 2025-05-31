@@ -10,13 +10,9 @@ app.secret_key = secrets.token_hex()
 def hello_world():
     return 'Hello World'
 
-@app.route('/locations/<int:locid>')
-def get_location(locid):
-    return f'[:GET] /locations/{locid}'
-
-@app.route("/<name>")
-def welcome(name):
-    return render_template("welcome.html", name=name)
+@app.route("/locations/<int:locid>")
+def locations(name):
+    return render_template("container-list.html", name=name)
 
 if __name__ == '__main__':
     app.run(debug=True)
