@@ -38,7 +38,8 @@ def process_container(container):
         "container_profile": container.get("container_profile_display_string_u_sstr"),
         "collections": container.get("collection_display_string_u_sstr"),
         "collection_identifiers": container.get("collection_identifier_stored_u_sstr"),
-        "repository": container["repository"]
+        "repository": container["repository"],
+        "uri": container["uri"]
     }
 
 
