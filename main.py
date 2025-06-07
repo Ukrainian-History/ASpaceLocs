@@ -21,7 +21,7 @@ def locations(location):
         repo = session['container_repo']
         from_location = session['last_location']
 
-        return render_template('move.html',
+        return render_template('move-container.html',
                                message=(f"Move container {container_id} in repository {repo} "
                                         f"from location {from_location} to {location}")
                                )
