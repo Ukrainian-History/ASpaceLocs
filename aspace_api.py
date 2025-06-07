@@ -4,7 +4,9 @@ from asnake.client import ASnakeClient
 from asnake.aspace import ASpace
 
 # validate ASnake client
-client = ASnakeClient()
+client = ASnakeClient(baseurl="https://sandbox.archivesspace.org/staff/api/",
+                      username="admin",
+                      password="admin")
 client.authorize()
 aspace = ASpace()
 
