@@ -2,8 +2,6 @@ import secrets
 
 from flask import Flask, render_template, session
 
-import aspace_api
-
 app = Flask(__name__)
 app.secret_key = secrets.token_hex()
 
@@ -26,13 +24,10 @@ def locations(location):
                                         f"from location {from_location} to {location}")
                                )
 
-    try:
-        location_name = aspace_api.get_location(location)
-    except aspace_api.NoLocationError:
-        return render_template("index.html", message=f"Location {location} does not exist!")
+    location_name = 'fake location name'
 
     session["last_location"] = location
-    containers = aspace_api.get_containers_at_location(location)
+    containers = []
     if containers:
         return render_template("container-list.html",
                                message=f"Contents of {location_name}:",
