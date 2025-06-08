@@ -1,15 +1,17 @@
 import secrets
 
 from flask import Flask, render_template, session
+import requests
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex()
 
 @app.route('/')
 def hello_world():
+    r = requests.get('https://sandbox.archivesspace.org/staff/api/')
     return render_template('index.html',
                            message='Welcome to the ArchivesSpace location browser tool.',
-                           second_message='Scan a location QR code to proceed.')
+                           second_message=r.text)
 
 @app.route("/locations/<int:location>")
 def locations(location):
