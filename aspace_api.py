@@ -4,11 +4,16 @@ from asnake.client import ASnakeClient
 from asnake.aspace import ASpace
 
 # validate ASnake client
-client = ASnakeClient(baseurl="https://sandbox.archivesspace.org/staff/api/",
-                      username="admin",
-                      password="admin")
-client.authorize()
-aspace = ASpace()
+
+try:
+    client = ASnakeClient(baseurl="https://sandbox.archivesspace.org/staff/api/",
+                          username="admin",
+                          password="admin")
+    client.authorize()
+    aspace = ASpace()
+except Exception as e:
+    print(f"Exception type: {type(e).__name__}")
+    print(f"Error message: {e}")
 
 
 class NoLocationError(Exception):
