@@ -1,4 +1,5 @@
 import json
+from os import environ
 
 from asnake.client import ASnakeClient
 from asnake.aspace import ASpace
@@ -6,9 +7,9 @@ from asnake.aspace import ASpace
 # validate ASnake client
 
 try:
-    client = ASnakeClient(baseurl="https://sandbox.archivesspace.org/staff/api/",
-                          username="admin",
-                          password="admin")
+    client = ASnakeClient(baseurl=environ.get('ASPACE_BASEURL'),
+                          username=environ.get('ASPACE_USER'),
+                          password=environ.get('ASPACE_PASSWORD'))
     client.authorize()
     aspace = ASpace()
 except Exception as e:
