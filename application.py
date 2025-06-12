@@ -27,12 +27,12 @@ def locations(location):
                                )
 
     try:
-        location_name = aspace_api_alt.get_location(location)
-    except aspace_api_alt.NoLocationError:
+        location_name = aspace_api.get_location(location)
+    except aspace_api.NoLocationError:
         return render_template("index.html", message=f"Location {location} does not exist!")
 
     session["last_location"] = location
-    containers = aspace_api_alt.get_containers_at_location(location)
+    containers = aspace_api.get_containers_at_location(location)
     if containers:
         return render_template("container-list.html",
                                message=f"Contents of {location_name}:",

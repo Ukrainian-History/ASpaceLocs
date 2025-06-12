@@ -11,8 +11,6 @@ password = environ.get('ASPACE_PASSWORD')
 # user = "admin"
 # password = "admin"
 
-# Authentication based on a script by ehanson8 (https://github.com/MITLibraries/archivesspace-api-python-scripts)
-#Authorize and store your session key in your header
 auth = requests.post(baseURL + '/users/' + user + '/login?password=' + password).json()
 session = auth['session']
 headers = {'X-ArchivesSpace-Session': session, 'Content_Type': 'application/json'}
@@ -59,7 +57,6 @@ def get_container_page(location, page_number):
     )
 
     response = requests.get(f'{baseURL}{query}', headers=headers)
-
     # TODO make sure there's no error
 
     response_json = json.loads(response.text)
