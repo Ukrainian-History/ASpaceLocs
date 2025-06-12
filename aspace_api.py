@@ -1,20 +1,21 @@
 import json
 from os import environ
 
-from asnake.client import ASnakeClient
-from asnake.aspace import ASpace
+import requests
 
-# validate ASnake client
+baseURL = environ.get('ASPACE_BASEURL')
+user = environ.get('ASPACE_USER')
+password = environ.get('ASPACE_PASSWORD')
 
-try:
-    client = ASnakeClient(baseurl=environ.get('ASPACE_BASEURL'),
-                          username=environ.get('ASPACE_USER'),
-                          password=environ.get('ASPACE_PASSWORD'))
-    client.authorize()
-    aspace = ASpace()
-except Exception as e:
-    print(f"Exception type: {type(e).__name__}")
-    print(f"Error message: {e}")
+# baseURL = "https://sandbox.archivesspace.org/staff/api/"
+# user = "admin"
+# password = "admin"
+
+# Authentication based on a script by ehanson8 (https://github.com/MITLibraries/archivesspace-api-python-scripts)
+#Authorize and store your session key in your header
+auth = requests.post(baseURL + '/users/' + user + '/login?password=' + password).json()
+session = auth['session']
+headers = {'X-ArchivesSpace-Session': session, 'Content_Type': 'application/json'}
 
 
 class NoLocationError(Exception):
@@ -30,13 +31,12 @@ class NoLocationError(Exception):
 
 
 def get_location(location):
-    response = aspace.client.get(f'/locations/{location}')
+    response = requests.get(f'{baseURL}locations/{location}', headers=headers)
     if response.status_code == 404:
         raise NoLocationError(f"Location {location} does not exist.")
 
     response_json = json.loads(response.text)
     return response_json["title"]
-
 
 
 def process_container(container):
@@ -53,12 +53,13 @@ def process_container(container):
 
 def get_container_page(location, page_number):
     query = (
-        f"/search?page={page_number}"
+        f"search?page={page_number}"
         "&filter_query[]=primary_type:top_container"
         f'&filter_query[]=location_uri_u_sstr:"/locations/{location}"'
     )
 
-    response = aspace.client.get(query)
+    response = requests.get(f'{baseURL}{query}', headers=headers)
+
     # TODO make sure there's no error
 
     response_json = json.loads(response.text)
@@ -68,7 +69,7 @@ def get_container_page(location, page_number):
 
 
 def get_containers_at_location(location):
-    response = aspace.client.get(f'/locations/{location}')
+    response = requests.get(f'{baseURL}locations/{location}', headers=headers)
     if response.status_code == 404:
         raise NoLocationError(f"Location {location} does not exist.")
 
