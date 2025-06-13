@@ -1,16 +1,35 @@
 {% extends 'index.html' %}
 {% block body %}
 <h2>{{ message }}</h2>
-{% for container in containers %}
-    <h3>{{container['name']}}</h3>
-    <p>{{container['container_profile'][0]}}</p>
-    <h4>Collections</h4>
-    <ul>
-    {% for collection in container['colls_with_ids'] %}
-        <li>{{ collection }} </li>
-    {% endfor %}
-    </ul>
-    <a href="/move{{ container['uri'] }}">Move this container</a>
-{% endfor %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+
+        {% for container in containers %}
+        <div class="col">
+            <!-- Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">{{container['name']}}</h3>
+                    <p>{{container['container_profile'][0]}}</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Collections</h4>
+                            <ul>
+                            {% for collection in container['colls_with_ids'] %}
+                                <li>{{ collection }} </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="card-text">This is the second column with additional details about timeline, resources, and key stakeholders involved in the project.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="/move{{ container['uri'] }}" class="btn btn-outline-primary">Move</a>
+                        <a href="/edit{{ container['uri'] }}" class="btn btn-outline-primary">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
 
 {% endblock %}
