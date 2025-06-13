@@ -1,0 +1,63 @@
+2025-06-11T12:44:36.5029143Z [2025-06-11 12:44:36 +0000] [1027] [INFO] Starting gunicorn 23.0.0
+2025-06-11T12:44:36.5345577Z [2025-06-11 12:44:36 +0000] [1027] [INFO] Listening at: http://0.0.0.0:8000 (1027)
+2025-06-11T12:44:36.5349148Z [2025-06-11 12:44:36 +0000] [1027] [INFO] Using worker: sync
+2025-06-11T12:44:36.5373198Z [2025-06-11 12:44:36 +0000] [1031] [INFO] Booting worker with pid: 1031
+2025-06-11T12:44:38.8024904Z [2025-06-11 12:44:38 +0000] [1031] [ERROR] Exception in worker process
+2025-06-11T12:44:38.8025369Z Traceback (most recent call last):
+2025-06-11T12:44:38.802541Z   File "/tmp/8dda8e59fa080cc/antenv/lib/python3.12/site-packages/urllib3/connection.py", line 198, in _new_conn
+2025-06-11T12:44:38.8025499Z     sock = connection.create_connection(
+2025-06-11T12:44:38.8025524Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-06-11T12:44:38.8025555Z   File "/tmp/8dda8e59fa080cc/antenv/lib/python3.12/site-packages/urllib3/util/connection.py", line 85, in create_connection
+2025-06-11T12:44:38.8025588Z     raise err
+2025-06-11T12:44:38.802562Z   File "/tmp/8dda8e59fa080cc/antenv/lib/python3.12/site-packages/urllib3/util/connection.py", line 73, in create_connection
+2025-06-11T12:44:38.8025649Z     sock.connect(sa)
+2025-06-11T12:44:38.8025696Z ConnectionRefusedError: [Errno 111] Connection refused
+2025-06-11T12:44:38.8025721Z
+2025-06-11T12:44:38.8025747Z The above exception was the direct cause of the following exception:
+2025-06-11T12:44:38.8025769Z
+2025-06-11T12:44:38.8025791Z Traceback (most recent call last):
+2025-06-11T12:44:38.8025817Z   File "/tmp/8dda8e59fa080cc/antenv/lib/python3.12/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+2025-06-11T12:44:38.8025839Z     response = self._make_request(
+2025-06-11T12:44:38.802587Z                ^^^^^^^^^^^^^^^^^^^
+2025-06-11T12:44:38.8025918Z   File "/tmp/8dda8e59fa080cc/antenv/lib/python3.12/site-packages/urllib3/connectionpool.py", line 493, in _make_request
+2025-06-11T12:44:38.8025941Z     conn.request(
+2025-06-11T12:44:38.8025966Z   File "/tmp/8dda8e59fa080cc/antenv/lib/python3.12/site-packages/urllib3/connection.py", line 445, in request
+2025-06-11T12:48:02.448994044Z     _____
+2025-06-11T12:48:02.449172653Z    /  _  \ __________ _________   ____
+2025-06-11T12:48:02.449179230Z   /  /_\  \\___   /  |  \_  __ \_/ __ \
+2025-06-11T12:48:02.449182850Z  /    |    \/    /|  |  /|  | \/\  ___/
+2025-06-11T12:48:02.449185898Z  \____|__  /_____ \____/ |__|    \___  >
+2025-06-11T12:48:02.449189364Z          \/      \/                  \/
+2025-06-11T12:48:02.449192345Z  A P P   S E R V I C E   O N   L I N U X
+2025-06-11T12:48:02.449195435Z
+2025-06-11T12:48:02.449198596Z  Documentation: http://aka.ms/webapp-linux
+2025-06-11T12:48:02.449201702Z  Python 3.12.10
+2025-06-11T12:48:02.449204748Z  Note: Any data outside '/home' is not persisted
+2025-06-11T12:48:02.891262899Z  Starting OpenBSD Secure Shell server: sshd.
+2025-06-11T12:48:02.900195685Z  WEBSITES_INCLUDE_CLOUD_CERTS is not set to true.
+2025-06-11T12:48:02.931259579Z  Updating certificates in /etc/ssl/certs...
+2025-06-11T12:48:04.771967900Z  2 added, 0 removed; done.
+2025-06-11T12:48:04.771988674Z  Running hooks in /etc/ca-certificates/update.d...
+2025-06-11T12:48:04.774503384Z  done.
+2025-06-11T12:48:04.784571305Z  CA certificates copied and updated successfully.
+2025-06-11T12:48:04.941185552Z  App Command Line not configured, will attempt auto-detect
+2025-06-11T12:48:04.941390007Z  Launching oryx with: create-script -appPath /home/site/wwwroot -output /opt/startup/startup.sh -virtualEnvName antenv -defaultApp /opt/defaultsite
+2025-06-11T12:48:04.958481606Z  Found build manifest file at '/home/site/wwwroot/oryx-manifest.toml'. Deserializing it...
+2025-06-11T12:48:04.962882147Z  Build Operation ID: ea3871b392e898da
+2025-06-11T12:48:04.965205534Z  Oryx Version: 0.2.20250505.1, Commit: bec89959884a7663432d6e3c4d36acc30657cb85, ReleaseTagName: 20250505.1
+2025-06-11T12:48:04.965557269Z  Output is compressed. Extracting it...
+2025-06-11T12:48:04.969885792Z  Extracting '/home/site/wwwroot/output.tar.gz' to directory '/tmp/8dda8e5ffbe6ba1'...
+2025-06-11T12:48:05.460496093Z  App path is set to '/tmp/8dda8e5ffbe6ba1'
+2025-06-11T12:48:05.621156651Z  Detected an app based on Flask
+2025-06-11T12:48:05.652660382Z  Generating `gunicorn` command for 'application:app'
+2025-06-11T12:48:05.683985896Z  Writing output script to '/opt/startup/startup.sh'
+2025-06-11T12:48:05.902373808Z  Using packages from virtual environment antenv located at /tmp/8dda8e5ffbe6ba1/antenv.
+2025-06-11T12:48:05.903356486Z  Updated PYTHONPATH to '/opt/startup/app_logs:/tmp/8dda8e5ffbe6ba1/antenv/lib/python3.12/site-packages'
+2025-06-11T12:48:06.211099234Z  [2025-06-11 12:48:06 +0000] [1008] [INFO] Starting gunicorn 23.0.0
+2025-06-11T12:48:06.225210576Z  [2025-06-11 12:48:06 +0000] [1008] [INFO] Listening at: http://0.0.0.0:8000 (1008)
+2025-06-11T12:48:06.225755578Z  [2025-06-11 12:48:06 +0000] [1008] [INFO] Using worker: sync
+2025-06-11T12:48:06.231291419Z  [2025-06-11 12:48:06 +0000] [1011] [INFO] Booting worker with pid: 1011
+2025-06-11T12:48:08.148559088Z  Exception type: ConnectionError
+2025-06-11T12:48:08.148777840Z  Error message: HTTPConnectionPool(host='localhost', port=4567): Max retries exceeded with url: /users/admin/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7bb7a7e823c0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-06-11T12:48:08.177018999Z  172.16.0.1 - - [11/Jun/2025:12:48:08 +0000] "GET /robots933456.txt HTTP/1.1" 404 207 "-" "HealthCheck/1.0"
+2025-06-11T12:49:21.900Z No new trace in the past 1 min(s).
