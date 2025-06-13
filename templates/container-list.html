@@ -1,9 +1,16 @@
 {% extends 'index.html' %}
 {% block body %}
-<p>{{ message }}</p>
-<ul>
-    {% for container in containers %}
-    <li>{{ container }} <a href="/move{{ container['uri'] }}">Move this container</a></li>
+<h2>{{ message }}</h2>
+{% for container in containers %}
+    <h3>{{container['name']}}</h3>
+    <p>{{container['container_profile'][0]}}</p>
+    <h4>Collections</h4>
+    <ul>
+    {% for collection in container['colls_with_ids'] %}
+        <li>{{ collection }} </li>
     {% endfor %}
-</ul>
+    </ul>
+    <a href="/move{{ container['uri'] }}">Move this container</a>
+{% endfor %}
+
 {% endblock %}

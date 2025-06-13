@@ -3,13 +3,13 @@ from os import environ
 
 import requests
 
-baseURL = environ.get('ASPACE_BASEURL')
-user = environ.get('ASPACE_USER')
-password = environ.get('ASPACE_PASSWORD')
+# baseURL = environ.get('ASPACE_BASEURL')
+# user = environ.get('ASPACE_USER')
+# password = environ.get('ASPACE_PASSWORD')
 
-# baseURL = "https://sandbox.archivesspace.org/staff/api/"
-# user = "admin"
-# password = "admin"
+baseURL = "https://sandbox.archivesspace.org/staff/api/"
+user = "admin"
+password = "admin"
 
 auth = requests.post(baseURL + '/users/' + user + '/login?password=' + password).json()
 session = auth['session']
