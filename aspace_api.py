@@ -15,6 +15,9 @@ auth = requests.post(baseURL + '/users/' + user + '/login?password=' + password)
 session = auth['session']
 headers = {'X-ArchivesSpace-Session': session, 'Content_Type': 'application/json'}
 
+response = requests.get(f'{baseURL}repositories', headers=headers)
+response_json = json.loads(response.text)
+repositories = {repo['uri']: {'name': repo['name'], 'code': repo['repo_code']} for repo in response_json}
 
 class NoLocationError(Exception):
     """Exception raised for invalid location.
@@ -44,7 +47,8 @@ def process_container(container):
         "container_profile": container.get("container_profile_display_string_u_sstr"),
         "collections": container.get("collection_display_string_u_sstr"),
         "collection_identifiers": container.get("collection_identifier_stored_u_sstr"),
-        "repository": container["repository"],
+        "repo": repositories[container["repository"]]["name"],
+        "repo_code": repositories[container["repository"]]["code"],
         "uri": container["uri"]
     }
 

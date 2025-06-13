@@ -8,21 +8,14 @@
             <!-- Card -->
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">{{container['name']}}</h3>
+                    <h3 class="card-title">{{container['name']}} ({{container['repo_code']}})</h3>
                     <p>{{container['container_profile'][0]}}</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4>Collections</h4>
-                            <ul>
-                            {% for collection in container['colls_with_ids'] %}
-                                <li>{{ collection }} </li>
-                            {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="card-text">This is the second column with additional details about timeline, resources, and key stakeholders involved in the project.</p>
-                        </div>
-                    </div>
+                    <h4>Collections</h4>
+                    <ul>
+                    {% for collection in container['colls_with_ids'] %}
+                        <li>{{ collection }} </li>
+                    {% endfor %}
+                    </ul>
                     <div class="d-flex gap-2 mt-3">
                         <a href="/move{{ container['uri'] }}" class="btn btn-outline-primary">Move</a>
                         <a href="/edit{{ container['uri'] }}" class="btn btn-outline-primary">Edit</a>
