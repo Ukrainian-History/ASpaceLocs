@@ -24,6 +24,11 @@ def locations(location):
     if action == "move":
         if request.method == 'GET':
             # we are confirming the move
+
+            if session['last_location'] == location:
+                return render_template("index.html",
+                                       danger=f"You must scan a QR code at a different location.")
+
             from_name = session['last_location_name']
             to_name = location_name
 
@@ -34,11 +39,19 @@ def locations(location):
         else:
             session.pop("action")
             if request.form['action'] == 'Move':
-                # TODO execute the move using ASpace API
-                return render_template('index.html', success='Container successfully moved')
+                (success, message) = aspace_api.move_container(session['container_repo'],
+                                                               session['container_id'],
+                                                               location)
+                if success:
+                    return render_template('index.html', success=message)
+                else:
+                    return render_template('index.html', danger=message)
             elif request.form['action'] == 'Cancel':
-                # TODO clean up
-                return render_template('index.html', warning='Cancelled')
+                session.pop('container_repo')
+                session.pop('container_id')
+                session.pop('container_name')
+                return render_template('index.html',
+                                       warning='Container move cancelled. Scan another location QR code')
 
     # default operation: we are not in the middle of a move
     session["last_location"] = location

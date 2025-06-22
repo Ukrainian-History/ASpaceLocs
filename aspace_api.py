@@ -1,15 +1,12 @@
 import json
 from os import environ
+from datetime import datetime
 
 import requests
 
-# baseURL = environ.get('ASPACE_BASEURL')
-# user = environ.get('ASPACE_USER')
-# password = environ.get('ASPACE_PASSWORD')
-
-baseURL = "https://sandbox.archivesspace.org/staff/api/"
-user = "admin"
-password = "admin"
+baseURL = environ.get('ASPACE_BASEURL') or "https://sandbox.archivesspace.org/staff/api/"
+user = environ.get('ASPACE_USER') or "admin"
+password = environ.get('ASPACE_PASSWORD') or "admin"
 
 auth = requests.post(baseURL + '/users/' + user + '/login?password=' + password).json()
 session = auth['session']
@@ -32,12 +29,12 @@ class NoLocationError(Exception):
 
 
 def get_location(location):
-    response = requests.get(f'{baseURL}locations/{location}', headers=headers)
-    if response.status_code == 404:
+    resp = requests.get(f'{baseURL}locations/{location}', headers=headers)
+    if resp.status_code == 404:
         raise NoLocationError(f"Location {location} does not exist.")
 
-    response_json = json.loads(response.text)
-    return response_json["title"]
+    resp_json = json.loads(resp.text)
+    return resp_json["title"]
 
 
 def process_container(container):
@@ -60,22 +57,24 @@ def get_container_page(location, page_number):
         f'&filter_query[]=location_uri_u_sstr:"/locations/{location}"'
     )
 
-    response = requests.get(f'{baseURL}{query}', headers=headers)
+    resp = requests.get(f'{baseURL}{query}', headers=headers)
     # TODO make sure there's no error
 
-    response_json = json.loads(response.text)
+    resp_json = json.loads(resp.text)
 
-    containers = [process_container(c) for c in response_json["results"]]
-    return int(response_json["this_page"]), int(response_json["last_page"]), containers
+    containers = [process_container(c) for c in resp_json["results"]]
+    return int(resp_json["this_page"]), int(resp_json["last_page"]), containers
+
 
 def get_specific_container(repo, container_id):
-    response = requests.get(f'{baseURL}repositories/{repo}/top_containers/{container_id}', headers=headers)
+    resp = requests.get(f'{baseURL}repositories/{repo}/top_containers/{container_id}', headers=headers)
     # TODO make sure there's no error
-    return json.loads(response.text)
+    return json.loads(resp.text)
+
 
 def get_containers_at_location(location):
-    response = requests.get(f'{baseURL}locations/{location}', headers=headers)
-    if response.status_code == 404:
+    resp = requests.get(f'{baseURL}locations/{location}', headers=headers)
+    if resp.status_code == 404:
         raise NoLocationError(f"Location {location} does not exist.")
 
     (this_page, last_page, containers) = get_container_page(location, 1)
@@ -86,7 +85,26 @@ def get_containers_at_location(location):
 
     return containers
 
+
+def move_container(repo, container, to_location):
+    container_info = get_specific_container(repo, container)
+    if len(container_info['container_locations']) != 1:
+        return False, "Containers that does not have exactly one location are not currently supported."
+
+    container_info['container_locations'][0]['start_date'] = datetime.today().strftime('%Y-%m-%d')
+    container_info['container_locations'][0]['ref'] = f'/locations/{to_location}'
+
+    resp = requests.post(f'{baseURL}repositories/{repo}/top_containers/{container}',
+                         json=container_info, headers=headers)
+    if resp.status_code != 200:
+        return False, resp.text
+
+    return True, "Successfully moved container. Result may not be immediately visible as the indexer needs to catch up"
+
+
 if __name__ == '__main__':
-    stuff = get_location(76)
-    stuff = get_containers_at_location(76)
+    # stuff = get_location(1)
+    # stuff = get_containers_at_location(1)
+    # stuff = get_specific_container(2, 258)
+    stuff = move_container(2, 258, 1)
     print(stuff)
