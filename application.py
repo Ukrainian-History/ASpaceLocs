@@ -1,6 +1,6 @@
 import secrets
 
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, request, redirect, url_for
 
 import aspace_api
 
@@ -15,23 +15,28 @@ def hello_world():
 
 @app.route("/locations/<int:location>")
 def locations(location):
+    try:
+        location_name = aspace_api.get_location(location)
+    except aspace_api.NoLocationError:
+        # TODO clean up after ourselves
+        return render_template("index.html", message=f"Location {location} does not exist!")
+
     action = session.pop("action", None)
     if action == "move":
         container_id = session['container_id']
         repo = session['container_repo']
         from_location = session['last_location']
+        from_name = session['last_location_name']
+        to_name = location_name
 
-        return render_template('move-container.html',
-                               message=(f"Move container {container_id} in repository {repo} "
-                                        f"from location {from_location} to {location}")
-                               )
-
-    try:
-        location_name = aspace_api.get_location(location)
-    except aspace_api.NoLocationError:
-        return render_template("index.html", message=f"Location {location} does not exist!")
+        return render_template('execute-move.html',
+                               container=session['container_name'],
+                               from_name=from_name,
+                               to_name=to_name)
 
     session["last_location"] = location
+    session["last_location_name"] = location_name
+
     containers = aspace_api.get_containers_at_location(location)
     if containers:
         for container in containers:
@@ -47,16 +52,24 @@ def locations(location):
         return render_template("index.html", message=f"Location {location_name} has no containers.")
 
 
-@app.route("/move/repositories/<int:repo>/top_containers/<int:container>")
+@app.route("/move/repositories/<int:repo>/top_containers/<int:container>", methods=['GET', 'POST'])
 def move_container(repo, container):
-    session["action"] = "move"
-    session["container_repo"] = repo
-    session["container_id"] = container
+    if request.method == 'POST':
+        session.pop("action")
+        session.pop("container_repo")
+        session.pop("container_id")
+        return redirect(url_for('locations', location=session['last_location']))
+    else:
+        container_info = aspace_api.get_specific_container(repo, container)
 
-    return render_template("index.html",
-                           message=f"Moving container {container} in repository {repo}",
-                           second_message="Scan the QR code of the destination location.")
-    #TODO provide a means of cancelling?
+        session["action"] = "move"
+        session["container_repo"] = repo
+        session["container_id"] = container
+        session["container_name"] = container_info['long_display_string']
+
+        return render_template("move-container.html",
+                               container=container_info['long_display_string'],
+                               from_name=session['last_location_name'])
 
 
 if __name__ == '__main__':

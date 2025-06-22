@@ -1,5 +1,15 @@
 {% extends 'index.html' %}
 {% block body %}
-<p>{{ message }}</p>
-<!-- provide confirm/cancel buttons -->
+<h2 class="pt-4">Move</h2>
+<p>{{ container }}</p>
+
+<h2>from</h2>
+<p>{{ from_name }}</p>
+
+<div class="alert alert-info pt-2">Scan the QR code of the destination location</div>
+
+<form id="cancel" action="" method="post">
+    <input type ="submit" name="action" value="Cancel" class="btn btn-outline-secondary btn-lg" />
+</form>
+
 {% endblock %}

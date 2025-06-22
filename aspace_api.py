@@ -68,6 +68,10 @@ def get_container_page(location, page_number):
     containers = [process_container(c) for c in response_json["results"]]
     return int(response_json["this_page"]), int(response_json["last_page"]), containers
 
+def get_specific_container(repo, container_id):
+    response = requests.get(f'{baseURL}repositories/{repo}/top_containers/{container_id}', headers=headers)
+    # TODO make sure there's no error
+    return json.loads(response.text)
 
 def get_containers_at_location(location):
     response = requests.get(f'{baseURL}locations/{location}', headers=headers)

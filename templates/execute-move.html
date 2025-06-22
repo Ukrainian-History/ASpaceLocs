@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% block body %}
+<h2 class="pt-4">Moving</h2>
+<p>{{ container }}</p>
+
+<h2>from</h2>
+<p>{{ from_name }}</p>
+
+<h2>to</h2>
+<p>{{ to_name }}</p>
+
+<form id="cancel" action="" method="post">
+    <input type ="submit" name="action" value="Move" class="btn btn-primary btn-lg" />
+    <input type ="submit" name="action" value="Cancel" class="btn btn-outline-secondary" />
+</form>
+
+{% endblock %}
