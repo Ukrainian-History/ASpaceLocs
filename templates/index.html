@@ -11,9 +11,38 @@
       <h1>ArchivesSpace Location Tool</h1>
       {% block body %}
 
-      <p>{{ message }}</p>
+      {% if message %}
+        <p>{{ message }}</p>
+      {% endif %}
 
-      <p>{{ second_message }}</p>
+      {% if second_message %}
+        <p>{{ second_message }}</p>
+      {% endif %}
+
+      {% if success %}
+        <div class="alert alert-success" role="alert">
+          {{ success }}
+        </div>
+      {% endif %}
+
+      {% if primary %}
+        <div class="alert alert-primary" role="alert">
+          {{ primary }}
+        </div>
+      {% endif %}
+
+      {% if danger %}
+        <div class="alert alert-danger" role="alert">
+          {{ danger }}
+        </div>
+      {% endif %}
+
+      {% if warning %}
+        <div class="alert alert-warning" role="alert">
+          {{ warning }}
+        </div>
+      {% endif %}
+
 
       {% endblock %}
     </div>

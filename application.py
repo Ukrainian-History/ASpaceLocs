@@ -9,31 +9,38 @@ app.secret_key = secrets.token_hex()
 
 @app.route('/')
 def hello_world():
-    return render_template('index.html',
-                           message='Welcome to the ArchivesSpace location browser tool.',
-                           second_message='Scan a location QR code to proceed.')
+    return render_template('index.html', primary='Scan a location QR code to proceed.')
 
-@app.route("/locations/<int:location>")
+@app.route("/locations/<int:location>", methods=['GET', 'POST'])
 def locations(location):
     try:
         location_name = aspace_api.get_location(location)
     except aspace_api.NoLocationError:
         # TODO clean up after ourselves
-        return render_template("index.html", message=f"Location {location} does not exist!")
+        # TODO if we are in the middle of a move, maybe allow user to re-select a location?
+        return render_template("index.html", danger=f"Location {location} does not exist!")
 
-    action = session.pop("action", None)
+    action = session.get("action", None)
     if action == "move":
-        container_id = session['container_id']
-        repo = session['container_repo']
-        from_location = session['last_location']
-        from_name = session['last_location_name']
-        to_name = location_name
+        if request.method == 'GET':
+            # we are confirming the move
+            from_name = session['last_location_name']
+            to_name = location_name
 
-        return render_template('execute-move.html',
-                               container=session['container_name'],
-                               from_name=from_name,
-                               to_name=to_name)
+            return render_template('execute-move.html',
+                                   container=session['container_name'],
+                                   from_name=from_name,
+                                   to_name=to_name)
+        else:
+            session.pop("action")
+            if request.form['action'] == 'Move':
+                # TODO execute the move using ASpace API
+                return render_template('index.html', success='Container successfully moved')
+            elif request.form['action'] == 'Cancel':
+                # TODO clean up
+                return render_template('index.html', warning='Cancelled')
 
+    # default operation: we are not in the middle of a move
     session["last_location"] = location
     session["last_location_name"] = location_name
 
@@ -49,7 +56,7 @@ def locations(location):
                                message=location_name,
                                containers=containers, location=location)
     else:
-        return render_template("index.html", message=f"Location {location_name} has no containers.")
+        return render_template("index.html", warning=f"{location_name} has no containers.")
 
 
 @app.route("/move/repositories/<int:repo>/top_containers/<int:container>", methods=['GET', 'POST'])
