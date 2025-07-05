@@ -36,6 +36,10 @@ def get_location(location):
     resp_json = json.loads(resp.text)
     return resp_json["title"]
 
+def get_all_location_ids():
+    resp = requests.get(f'{baseURL}locations?all_ids=true', headers=headers)
+    resp_json = json.loads(resp.text)
+    return resp_json
 
 def process_container(container):
     return {
@@ -106,5 +110,6 @@ if __name__ == '__main__':
     # stuff = get_location(1)
     # stuff = get_containers_at_location(1)
     # stuff = get_specific_container(2, 258)
-    stuff = move_container(2, 258, 1)
+    # stuff = move_container(2, 258, 1)
+    stuff = get_all_location_ids()
     print(stuff)
