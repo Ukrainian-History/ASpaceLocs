@@ -14,7 +14,7 @@ password = environ.get('ASPACE_PASSWORD') or "admin"
 try:
     client = ASnakeClient(baseurl=baseURL, username=user, password=password)
     client.authorize()
-    aspace = ASpace()
+    aspace = ASpace(baseurl=baseURL, username=user, password=password)
 except Exception as e:
     print(f"Exception type: {type(e).__name__}")
     print(f"Error message: {e}")
@@ -106,11 +106,11 @@ def move_container(repo, container, to_location):
     container_info['container_locations'][0]['start_date'] = datetime.today().strftime('%Y-%m-%d')
     container_info['container_locations'][0]['ref'] = f'/locations/{to_location}'
 
-    resp = aspace.client.get(f'/repositories/{repo}/top_containers/{container}', json=container_info)
+    resp = aspace.client.post(f'/repositories/{repo}/top_containers/{container}', json=container_info)
     if resp.status_code != 200:
         return False, resp.text
 
-    return True, "Successfully moved container. Result may not be immediately visible as the indexer needs to catch up"
+    return True, "Successfully moved container. Result may not be immediately visible as the indexer needs to catch up."
 
 
 if __name__ == '__main__':

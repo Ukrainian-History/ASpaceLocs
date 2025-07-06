@@ -2,7 +2,7 @@ import secrets
 
 from flask import Flask, render_template, session, request, redirect, url_for
 
-import aspace_api
+import aspace_api_asnake as aspace_api
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex()
