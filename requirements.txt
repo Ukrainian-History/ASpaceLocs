@@ -18,6 +18,8 @@ click==8.2.1
     #   flask
 flask==3.1.1
     # via aspacelocs (pyproject.toml)
+gunicorn==23.0.0
+    # via aspacelocs (pyproject.toml)
 idna==3.10
     # via requests
 itsdangerous==2.2.0
@@ -31,8 +33,14 @@ markupsafe==3.0.2
     #   werkzeug
 more-itertools==10.7.0
     # via archivessnake
+packaging==25.0
+    # via gunicorn
+pillow==11.3.0
+    # via aspacelocs (pyproject.toml)
 pyyaml==6.0.2
     # via archivessnake
+qrcode==8.2
+    # via aspacelocs (pyproject.toml)
 rapidfuzz==3.13.0
     # via archivessnake
 requests==2.32.3
