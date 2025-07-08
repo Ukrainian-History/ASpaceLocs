@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "archivessnake>=0.10.1",
+    "azure-identity>=1.23.0",
+    "azure-keyvault-secrets>=4.10.0",
     "click>=8.2.1",
     "flask>=3.1.1",
     "gunicorn>=23.0.0",
