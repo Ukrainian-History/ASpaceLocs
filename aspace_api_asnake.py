@@ -18,6 +18,7 @@ try:
 except Exception as e:
     print(f"Exception type: {type(e).__name__}")
     print(f"Error message: {e}")
+    exit(1)
 
 resp = aspace.client.get(f'/repositories')
 response_json = json.loads(resp.text)

@@ -4,6 +4,10 @@ import textwrap
 
 import aspace_api
 
+
+### Generate a PNG file for each location in the ArchivesSpace instance with a QR code for the
+# flask '/locations/<n>' endpoint and a text block with the description of the location
+
 font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"  # Adjust as needed
 font_size = 16
 flask_endpoint = "https://locs.ukrhec.org"
