@@ -1,8 +1,16 @@
 import secrets
 
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template, session, request, redirect, url_for, flash
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
 
 import aspace_api_asnake as aspace_api
+
+
+class EditForm(FlaskForm):
+    barcode = StringField('Barcode')
+    submit = SubmitField('Save')
+    cancel = SubmitField('Cancel')
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex()
@@ -90,6 +98,31 @@ def move_container(repo, container):
         return render_template("move-container.html",
                                container=container_info['long_display_string'],
                                from_name=session['last_location_name'])
+
+@app.route("/edit/repositories/<int:repo>/top_containers/<int:container>", methods=['GET', 'POST'])
+def edit_container(repo, container):
+    form = EditForm()
+    if form.validate_on_submit():
+        # POST
+        if form.submit.data:
+            container_info = session.pop('container_info')
+            old_barcode = container_info.get('barcode', '')
+            container_info['barcode'] = form.barcode.data
+            (success, message) = aspace_api.edit_container(repo, container, container_info)
+            if success:
+                pass
+            else:
+                pass
+        else:
+            # canceled by user
+            return redirect(url_for('locations', location=session['last_location']))
+    else:
+        # GET
+        container_info = aspace_api.get_specific_container(repo, container)
+        session['container_info'] = container_info
+        form.barcode.data = container_info.get('barcode', '')
+
+    return render_template('edit-container.html', form=form)
 
 
 if __name__ == '__main__':

@@ -113,11 +113,18 @@ def move_container(repo, container, to_location):
 
     return True, "Successfully moved container. Result may not be immediately visible as the indexer needs to catch up."
 
+def edit_container(repo, container, container_info):
+    resp = aspace.client.post(f'/repositories/{repo}/top_containers/{container}', json=container_info)
+    if resp.status_code != 200:
+        return False, resp.text
+
+    return True, "Successfully edited container. Result may not be immediately visible as the indexer needs to catch up."
+
 
 if __name__ == '__main__':
     # stuff = get_location(1)
     # stuff = get_containers_at_location(1)
-    # stuff = get_specific_container(2, 258)
+    stuff = get_specific_container(2, 258)
     # stuff = move_container(2, 258, 1)
-    stuff = get_all_location_ids()
+    # stuff = get_all_location_ids()
     print(stuff)
