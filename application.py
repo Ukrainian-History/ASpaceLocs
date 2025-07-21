@@ -7,6 +7,20 @@ import aspace_api_asnake as aspace_api
 app = Flask(__name__)
 app.secret_key = secrets.token_hex()
 
+@app.after_request
+def add_header(r):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 0 minutes.
+
+    From https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
+    """
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers['Cache-Control'] = 'public, max-age=0'
+    return r
+
 @app.route('/')
 def hello_world():
     return render_template('index.html', primary='Scan a location QR code to proceed.')
@@ -24,7 +38,6 @@ def locations(location):
     if action == "move":
         if request.method == 'GET':
             # we are confirming the move
-
             if session['last_location'] == location:
                 return render_template("index.html",
                                        danger=f"You must scan a QR code at a different location.")
@@ -37,6 +50,7 @@ def locations(location):
                                    from_name=from_name,
                                    to_name=to_name)
         else:
+            # move has been confirmed and we're executing it
             session.pop("action")
             if request.form['action'] == 'Move':
                 (success, message) = aspace_api.move_container(session['container_repo'],
@@ -53,7 +67,7 @@ def locations(location):
                 return render_template('index.html',
                                        warning='Container move cancelled. Scan another location QR code')
 
-    # default operation: we are not in the middle of a move
+    # default operation: user just wants to know what's at a location, and we are not in the middle of a move
     session["last_location"] = location
     session["last_location_name"] = location_name
 
