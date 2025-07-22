@@ -57,15 +57,17 @@ def locations(location):
                                                                session['container_id'],
                                                                location)
                 if success:
-                    return render_template('index.html', success=message)
+                    return render_template('index.html', success=message, button_text="Continue")
                 else:
-                    return render_template('index.html', danger=message)
+                    return render_template('index.html', danger=message, button_text="Continue")
             elif request.form['action'] == 'Cancel':
                 session.pop('container_repo')
                 session.pop('container_id')
                 session.pop('container_name')
                 return render_template('index.html',
                                        warning='Container move cancelled. Scan another location QR code')
+    elif request.method == "POST":
+        return redirect(url_for('locations', location=session['last_location']))
 
     # default operation: user just wants to know what's at a location, and we are not in the middle of a move
     session["last_location"] = location
