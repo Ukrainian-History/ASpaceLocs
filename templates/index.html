@@ -9,8 +9,6 @@
   <body>
     <div class="container py-5">
       <h1>ArchivesSpace Location Tool</h1>
-      {% block body %}
-
       {% if message %}
         <p>{{ message }}</p>
       {% endif %}
@@ -43,8 +41,15 @@
         </div>
       {% endif %}
 
-
+      {% block body %}
       {% endblock %}
+
+      {% if button_text %}
+        <form id="main-button" action="" method="post">
+            <input type ="submit" name="action" value="{{ button_text }}" class="btn btn-outline-secondary btn-lg" />
+        </form>
+      {% endif %}
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
