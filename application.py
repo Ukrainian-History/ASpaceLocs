@@ -1,4 +1,5 @@
 import secrets
+import logging
 
 from flask import Flask, render_template, session, request, redirect, url_for
 
@@ -6,6 +7,10 @@ import aspace_api_asnake as aspace_api
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex()
+
+logging.basicConfig(level=logging.INFO)
+app.logger.addHandler(logging.StreamHandler())
+app.logger.setLevel(logging.INFO)
 
 @app.after_request
 def add_header(r):
@@ -24,6 +29,14 @@ def add_header(r):
 @app.route('/')
 def hello_world():
     return render_template('index.html', primary='Scan a location QR code to proceed.')
+
+
+@app.route("/clear")
+def clear():
+    session.clear()
+    return render_template('index.html',
+                           success='Session variables have been cleared.')
+
 
 @app.route("/locations/<int:location>", methods=['GET', 'POST'])
 def locations(location):
