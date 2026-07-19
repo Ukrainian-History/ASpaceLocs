@@ -2,19 +2,13 @@
 
 A mobile-friendly Flask web application for managing storage locations and top containers in [ArchivesSpace](https://archivesspace.org/). Designed for use in a stacks setting, staff scan QR codes posted at each physical location to view and move containers between locations.
 
-
-## Features
-
-- **Scan-to-view**: Each physical location (shelf, bay, etc.) has a QR code. Scanning it shows all top containers currently assigned to that location in ArchivesSpace, including container profile and associated collections.
-- **Move containers**: Select a container at one location, scan the QR code at the destination, and confirm to update the container's location in ArchivesSpace.
-- **QR code label generation**: A standalone script (`genlabels.py`) generates printable QR code PNG labels for all defined locations.
-
 ## How it works
 
 1. Staff scans a QR code at a physical location with a phone or tablet.
 2. The app queries the ArchivesSpace API for all top containers across all repositories at that location.
 3. Containers are displayed with details (name, repository, profile, associated collections).
 4. To move a container, staff taps "Move" on a container card, then scans the QR code at the destination location and confirms the move.
+5. A standalone script (`genlabels.py`) generates printable QR code PNG labels for all defined locations.
 
 ## Project structure
 
