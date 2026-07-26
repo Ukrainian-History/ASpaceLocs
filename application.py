@@ -1,5 +1,6 @@
 import secrets
 import logging
+import traceback
 
 from flask import Flask, render_template, session, request, redirect, url_for
 
@@ -11,6 +12,12 @@ app.secret_key = secrets.token_hex()
 logging.basicConfig(level=logging.DEBUG)
 app.logger.addHandler(logging.StreamHandler())
 app.logger.setLevel(logging.DEBUG)
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    app.logger.error("Unhandled exception: %s\n%s", e, traceback.format_exc())
+    return render_template("index.html", danger="An internal error occurred. Check server logs for details."), 500
 
 @app.after_request
 def add_header(r):
