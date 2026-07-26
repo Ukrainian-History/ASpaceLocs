@@ -94,9 +94,12 @@ def locations(location):
     containers = aspace_api.get_containers_at_location(location)
     if containers:
         for container in containers:
-            collections = [f'{cname} ({cid})' for cname, cid in zip(
-                container['collections'],
-                container['collection_identifiers'])]
+            if container['collections']:
+                collections = [f'{cname} ({cid})' for cname, cid in zip(
+                    container['collections'],
+                    container['collection_identifiers'])]
+            else:
+                collections = []
             container['colls_with_ids'] = collections
 
         return render_template("container-list.html",
