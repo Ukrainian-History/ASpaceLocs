@@ -34,13 +34,7 @@ def hello_world():
 @app.route("/clear")
 def clear():
     session.clear()
-<<<<<<< HEAD
     return render_template('index.html', success='Session variables have been cleared.')
-=======
-    return render_template('index.html',
-                           success='Session variables have been cleared.')
->>>>>>> 04f8ff5d4d887dbe1a9a083a0459a8a4a468927c
-
 
 @app.route("/locations/<int:location>", methods=['GET', 'POST'])
 def locations(location):
